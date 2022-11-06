@@ -1,0 +1,14 @@
+drop database mydb;
+create database mydb;
+use mydb;
+create table user(
+	id varchar(40),
+    pw varchar(40),
+    name varchar(40)
+);
+insert into user values
+("a", 1, "nameA"),
+("b", 1, "nameB"),
+("c", 1, "nameC");
+
+select * from user;

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>시작페이지d</h2>
+	<input id="id" name="id">
+	<input id="pw" name="pw">
+	<input id="name" name="name">
+	<button onclick="send();">전송</button><br><br>
+	
+	<div id="container">데이터베이스에 있는 데이터</div>
+	<table id="database">
+		<tr>
+			<th>아이디</th>
+			<th>비번</th>
+			<th>이름</th>
+		</tr>
+	</table>
+	<script>
+		loading = function () {
+			fetch("user/loadUser")
+			.then(response => response.json())
+			.then(data => {
+				console.log(data)
+				for (var d of data) {
+					console.log(d);
+					var tr = document.createElement("tr");
+					tr.innerHTML = `
+						<td>${d.id}</td>
+						<td>${d.pw}</td>
+						<td>${d.name}</td>
+					`
+					document.querySelector("#database").appendChild(tr)
+				}
+			})
+		}
+		send = function() {
+			fetch("user/upload", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					"id": id.value,
+					"pw": pw.value,
+					"name": document.querySelector("#name").value}),
+			})
+			.then(function () {
+				var tr = document.createElement("tr");
+					tr.innerHTML = `
+						<td>${id.value}</td>
+						<td>${pw.value}</td>
+						<td>${document.querySelector("#name").value}</td>
+					`;
+					document.querySelector("#database").appendChild(tr)
+					id.value = "";
+					pw.value = "";
+					document.querySelector("#name").value = "";
+			});
+		}
+		loading();
+	</script>
+</body>
+</html>
